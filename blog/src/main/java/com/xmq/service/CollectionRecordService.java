@@ -1,0 +1,35 @@
+package com.xmq.service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xmq.entity.Article;
+import com.xmq.entity.CollectionRecord;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+/**
+* @author xumengqi
+* @description 针对表【collection_record(文章收藏记录表)】的数据库操作Service
+* @createDate 2025-02-25 22:22:23
+*/
+public interface CollectionRecordService extends IService<CollectionRecord> {
+    
+    /**
+     * 获取用户对文章的收藏状态
+     * @param articleId 文章ID
+     * @return 是否已收藏
+     */
+    boolean getCollectionStatus(Long articleId);
+
+    /**
+     * 收藏或取消收藏文章
+     * @param articleId 文章ID
+     */
+    void toggleCollection(Long articleId);
+
+    /**
+     * 获取用户收藏的文章列表
+     * @param page 页码
+     * @param size 每页大小
+     * @return 分页的文章列表
+     */
+    IPage<Article> getCollectedArticles(int page, int size);
+}

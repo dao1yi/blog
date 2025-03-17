@@ -1,0 +1,97 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.200.133:3306/blog_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1234
+
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 3324456464@qq.com
+    password: cdaolufjzjoudafi
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true  # 启用 TLS
+      mail.smtp.ssl.trust: smtp.qq.com  # 信任的主机
+
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+      enabled: true
+      location: ${user.dir}/temp
+
+  data:
+    redis:
+      host: 192.168.200.133
+      port: 6379
+      database: 0
+      timeout: 10s
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.xmq.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+minio:
+  endpoint: http://192.168.200.133:9001
+  accessKey: admin
+  secretKey: admin123
+  bucketName: blog
+  urlPrefix: http://192.168.200.133:9001/blog
+  maxSize: 10485760
+  allowedContentTypes:
+    - image/jpeg
+    - image/png
+    - image/gif
+    - application/pdf
+    - application/msword
+    - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+#upload:
+#  basePath: ${user.dir}/uploads/
+#  allowedExtensions:
+#    - jpg
+#    - jpeg
+#    - png
+#    - gif
+#    - pdf
+#    - doc
+#    - docx
+#  imageExtensions:
+#    - jpg
+#    - jpeg
+#    - png
+#    - gif
+#  maxSize: 10485760
+
+# Knife4j配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  packages-to-scan: com.xmq.controller
+  paths-to-match: /api/**
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
