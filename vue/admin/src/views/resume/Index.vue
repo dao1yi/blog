@@ -9,7 +9,7 @@
     </div>
 
     <div class="content" v-loading="loading">
-      <template v-if="resume">
+      <template v-if="resume.id != null">
         <el-form ref="formRef" :model="resume" label-width="100px" :rules="rules">
           <el-form-item label="姓名" prop="name">
             <el-input v-model="resume.name" placeholder="请输入姓名" />
@@ -130,6 +130,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { resumeApi } from '../../apis/resume'
 
 interface Resume {
+  id?: number | string,
   name: string
   avatar: string
   email: string
@@ -153,6 +154,7 @@ const formRef = ref<FormInstance>()
 
 // 表单数据
 const resume = ref<Resume>({
+  id: undefined,
   name: '',
   avatar: '',
   email: '',

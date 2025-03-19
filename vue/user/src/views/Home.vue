@@ -14,14 +14,14 @@
         <template v-else>
           <div class="personal-info">
             <div class="left-info">
-              <img :src="resumeData?.avatar || 'https://via.placeholder.com/100x100'" alt="头像" class="avatar" />
+              <img :src="resumeData?.avatar" alt="头像" class="avatar" />
               <div class="basic-info">
-                <div class="name">姓名：{{ resumeData?.name || '未设置' }}</div>
-                <div class="email">电子邮箱：{{ resumeData?.email || '未设置' }}</div>
+                <div class="name">姓名：{{ resumeData?.name }}</div>
+                <div class="email">电子邮箱：{{ resumeData?.email }}</div>
               </div>
             </div>
             <div class="right-info">
-              <div class="introduction">{{ resumeData?.introduction || '这个人很懒，还没有写简介' }}</div>
+              <div class="introduction">{{ resumeData?.introduction }}</div>
             </div>
           </div>
 
@@ -101,7 +101,18 @@ import { getResume, type Resume } from '@/api/resume'
 import { getHotArticles, type ArticleHotVO } from '@/api/article'
 
 const router = useRouter()
-const resumeData = ref<Resume | null>(null)
+const defaultResumeData = {
+  avatar: 'https://via.placeholder.com/100x100',
+  name: '许梦旗',
+  email: '3324456464@qq.com',
+  introduction: '热爱学习\n具备良好的学习能力和团队协作精神\n熟悉软件开发流程和敏捷开发方法\n对新技术和工具保持敏感，能够快速学习并应用\n参与开源项目，关注技术社区动态\n探索新的编程语言和框架\n阅读与技术和编程相关的书籍和文章',
+  honors: ['国家励志奖学金', '蓝桥杯国三', 'CCPC省级铜奖', '天梯赛国三'],
+  skills: ['Spring Boot', 'Spring Cloud','MySQL','Redis','Minio','Docker','Git','Linux','Vue'],
+  resumeUrl: 'http://192.168.200.133:9001/blog/304d593a3f454bc4b464eadaf142605c.pdf',
+  projectUrl: 'http://192.168.200.133:9001/blog/304d593a3f454bc4b464eadaf142605c.pdf'
+}
+
+const resumeData = ref<Resume | null>(defaultResumeData)
 const hotArticles = ref<ArticleHotVO[]>([])
 const sortType = ref<'view' | 'like'>('view')
 const loading = ref({
@@ -114,9 +125,10 @@ const fetchResume = async () => {
   try {
     loading.value.resume = true
     const data = await getResume()
-    resumeData.value = data
+    resumeData.value = data || defaultResumeData
   } catch (error) {
     console.error('获取简历信息失败:', error)
+    resumeData.value = defaultResumeData
   } finally {
     loading.value.resume = false
   }

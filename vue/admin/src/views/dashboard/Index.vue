@@ -79,6 +79,7 @@
               <el-radio-group v-model="hotArticleParams.type" size="small" @change="getHotArticles">
                 <el-radio-button label="view">浏览榜</el-radio-button>
                 <el-radio-button label="like">点赞榜</el-radio-button>
+                <!-- <el-radio-button label="collect">收藏榜</el-radio-button> -->
               </el-radio-group>
             </div>
           </template>
@@ -93,15 +94,22 @@
               <div class="content">
                 <div class="title">{{ article.title }}</div>
                 <div class="info">
-                  <span>{{ article.authorName }}</span>
+                  <span>
+                    <el-icon><View /></el-icon>
+                    {{ article.viewCount }}
+                  </span>
                   <el-divider direction="vertical" />
                   <span>
-                    <el-icon>
-                      <View v-if="hotArticleParams.type === 'view'" />
-                      <Star v-else />
-                    </el-icon>
-                    {{ article.periodCount }}
+                    <el-icon><Star /></el-icon>
+                    {{ article.likeCount }}
                   </span>
+                  <el-divider direction="vertical" />
+                  <span>
+                    <el-icon><Collection /></el-icon>
+                    {{ article.collectionCount }}
+                  </span>
+                  <el-divider direction="vertical" />
+                  <span>{{ article.authorName }}</span>
                 </div>
               </div>
             </div>
@@ -114,7 +122,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick, reactive } from 'vue'
-import { View, User, Star } from '@element-plus/icons-vue'
+import { View, User, Star, Collection } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import type { EChartsOption } from 'echarts'
 import { useRouter } from 'vue-router'
@@ -132,7 +140,9 @@ interface HotArticle {
   id: number
   title: string
   authorName: string
-  periodCount: number
+  viewCount: number    // 浏览量
+  likeCount: number    // 点赞量
+  collectionCount: number // 收藏量
 }
 
 const loading = ref(false)
@@ -555,19 +565,29 @@ onUnmounted(() => {
   color: #909399;
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.info span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .info .el-icon {
-  margin-right: 4px;
   font-size: 14px;
 }
 
 .info .el-icon.view {
-  color: var(--primary-color);
+  color: #409EFF;
 }
 
 .info .el-icon.star {
   color: #E6A23C;
+}
+
+.info .el-icon.collection {
+  color: #67C23A;
 }
 
 /* 暗色主题适配 */
