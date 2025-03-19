@@ -6,12 +6,43 @@ import java.util.Date;
 @Data
 public class CommentVO {
     
-    private Long id;            // 评论ID
-    private String content;     // 评论内容
-    private Long userId;        // 评论用户ID
-    private String userName;    // 评论用户名
-    private String userAvatar;  // 评论用户头像
-    private Long parentId;      // 父评论ID
-    private Integer childCount; // 子评论数量
-    private Date createdTime;   // 评论时间
+    /**
+     * 评论ID
+     */
+    private Long id;
+    
+    /**
+     * 评论内容
+     */
+    private String content;
+    
+    /**
+     * 评论者用户ID
+     */
+    private Long userId;
+    
+    /**
+     * 评论者用户名
+     */
+    private String userName;
+    
+    /**
+     * 评论者头像URL
+     */
+    private String userAvatar;
+    
+    /**
+     * 父评论ID，如果是一级评论则为null
+     */
+    private Long parentId;
+    
+    /**
+     * 子评论数量
+     */
+    private Integer childCount;
+    
+    /**
+     * 评论创建时间
+     */
+    private Date createdTime;
 } 

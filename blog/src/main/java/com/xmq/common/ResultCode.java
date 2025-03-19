@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum ResultCode {
     
     SUCCESS(200, "操作成功"),
-    UNAUTHORIZED(401, "未登录或token已过期"),
+    UNAUTHORIZED(401, "请登录后操作"),
     FORBIDDEN(403, "没有操作权限"),
     NOT_FOUND(404, "请求的资源不存在"),
     INTERNAL_ERROR(500, "服务器内部错误"),

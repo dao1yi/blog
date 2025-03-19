@@ -131,8 +131,12 @@ public class LikeRecordServiceImpl extends ServiceImpl<LikeRecordMapper, LikeRec
             .collect(Collectors.toList());
 
         // 查询文章信息
-        List<Article> articles = articleIds.isEmpty() ? 
-            List.of() : articleService.getArticlesByIds(articleIds);
+//        List<Article> articles = articleIds.isEmpty() ?
+//            List.of() : articleService.getArticlesByIds(articleIds);
+
+        LambdaQueryWrapper<Article> articleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        articleLambdaQueryWrapper.eq(Article::getStatus,1).in(Article::getId,articleIds);
+        List<Article> articles = articleService.list(articleLambdaQueryWrapper);
 
         // 构建返回结果
         Page<Article> articlePage = new Page<>(

@@ -225,7 +225,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
 
         // 批量查询文章
         List<Article> articles = this.listByIds(articleIds);
-        
         // 将查询结果转换为Map，以便按照输入的ID顺序重新排序
         Map<Long, Article> articleMap = articles.stream()
             .collect(Collectors.toMap(Article::getId, article -> article));
