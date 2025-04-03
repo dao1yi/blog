@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmq.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.xmq.entity.Comment">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="articleId" column="article_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,content,article_id,
+        user_id,parent_id,created_time,
+        updated_time,is_deleted
+    </sql>
+
+    <update id="updateChildComments">
+        update comment
+            set parent_id = #{parentId},updated_time = #{date}
+        where parent_id = #{id}
+    </update>
+
+    <!-- 批量查询评论的子评论数量 -->
+    <select id="selectChildCount" resultType="java.util.HashMap">
+        SELECT
+            parent_id ,
+            COUNT(*) as count
+        FROM comment
+        WHERE parent_id IN
+        <foreach collection="commentIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND is_deleted = 0
+        GROUP BY parent_id
+    </select>
+
+</mapper>

@@ -1,0 +1,81 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/blog_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: ****
+
+  mail:
+    host: smtp.qq.com
+    port: 587
+# 改为自己的
+    username: *******@qq.com
+    password: *******
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true  # 启用 TLS
+      mail.smtp.ssl.trust: smtp.qq.com  # 信任的主机
+
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+      enabled: true
+      location: ${user.dir}/temp
+
+  data:
+    redis:
+      host: redis
+      port: 6379
+      database: 0
+      timeout: 10s
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.xmq.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+minio:
+  endpoint: http://minio:9000
+  accessKey: minio #改为自己的，创建容器时设置的
+  secretKey: minio #
+  bucketName: blog
+#目前我的操作是这里是云服务器的地址，并且云服务器开放了9000端口，文件是直接访问的这个端口链接
+  urlPrefix: http://localhost:9000/blog
+  maxSize: 10485760
+  allowedContentTypes:
+    - image/jpeg
+    - image/png
+    - image/gif
+    - application/pdf
+    - application/msword
+    - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+# Knife4j配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  packages-to-scan: com.xmq.controller
+  paths-to-match: /api/**
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
